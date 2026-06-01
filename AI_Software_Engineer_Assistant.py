@@ -4,9 +4,6 @@ from groq import Groq
 import os
 from datetime import datetime
 
-print("TZ ENV:", os.environ.get("TZ"))
-print("Current time:", datetime.now())
-
 pn.extension()
 load_dotenv()
 
