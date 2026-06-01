@@ -2,13 +2,11 @@ import panel as pn
 from dotenv import load_dotenv
 from groq import Groq
 import os
-from datetime import datetime
 
 pn.extension()
 load_dotenv()
 
 API_KEY = os.getenv("GROQ_API_KEY")
-
 
 # region helper methods
 def get_response_from_messages(chat_history, model="llama-3.3-70b-versatile", temperature=0):
@@ -16,20 +14,28 @@ def get_response_from_messages(chat_history, model="llama-3.3-70b-versatile", te
         {"role": "system", "content": system_prompt},
         *chat_history
     ]
-    print(messages)
+    # print("Before Groq call")
     response = client.chat.completions.create(
         model=model,
         messages=messages,
         temperature=temperature
     )
+    # print("After Groq call")
     return response.choices[0].message.content
 
 def chat_callback(message, user, instance):
-    chat_history.append({"role": "user", "content": message})
-    # prompt = f"{system_prompt}\n\n" + "\n".join(chat_history)
-    response = get_response_from_messages(chat_history, model=model_select.value, temperature=temperature.value)
-    chat_history.append({"role": "assistant", "content": response})
-    return response
+    try: 
+        chat_history.append({"role": "user", "content": message})
+        # print("Entered Chat Callback")
+        # prompt = f"{system_prompt}\n\n" + "\n".join(chat_history)
+        response = get_response_from_messages(chat_history, model=model_select.value, temperature=temperature.value)
+        # print("Got response from get_response_from_messages")
+        chat_history.append({"role": "assistant", "content": response})
+        # print(chat_history)
+        return response
+    except Exception as e:
+        print("ERROR: ", repr(e))
+        raise
 
 # endregion 
 
@@ -38,7 +44,7 @@ temperature = pn.widgets.FloatSlider(
     name="Temperature",
     start=0,
     end=2,
-    step=0.2,
+    step=0.1,
     value=0.7
 )
 
@@ -52,9 +58,6 @@ model_select = pn.widgets.Select(
 
 # Initialize the GenAI client
 client = Groq(api_key=API_KEY)
-
-# chatbot callback
-chat_history = []
 
 # region model definitions
 system_prompt = """
@@ -77,17 +80,7 @@ chat_ui = pn.chat.ChatInterface(
     }
 )
 
-
-# Design the interface
-template = pn.template.FastListTemplate(
-    title="AI Software Engineering Assistant",
-    sidebar=[
-        model_select,
-        temperature
-    ],
-    theme=pn.theme.DarkTheme,
-    main = [chat_ui]
-)
+chat_history = []  # This will store the conversation history
 
 pn.extension(
     raw_css=[
@@ -114,9 +107,17 @@ header = pn.pane.Markdown("""
 Get detailed notes on any topic you want to learn.
 """)
 
-pn.Column(
-    header,
-    chat_ui
+# Design the interface
+template = pn.template.FastListTemplate(
+    title="AI Software Engineering Assistant",
+    sidebar=[
+        model_select,
+        temperature
+    ],
+    theme=pn.theme.DarkTheme,
+    theme_toggle=False,
+    main = [header, 
+            chat_ui]
 )
 
 template.servable()
