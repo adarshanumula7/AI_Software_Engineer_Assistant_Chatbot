@@ -8,6 +8,7 @@ load_dotenv()
 
 API_KEY = os.getenv("GROQ_API_KEY")
 
+
 # region helper methods
 def get_response_from_messages(chat_history, model="llama-3.3-70b-versatile", temperature=0):
     messages = [
