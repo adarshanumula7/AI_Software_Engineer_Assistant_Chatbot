@@ -1,0 +1,21 @@
+name: Sync to Hugging Face
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: huggingface/hub-sync@v0.1.0
+        with:
+          github_repo_id: ${{ github.repository }}
+          huggingface_repo_id: adarsh-anumula7/AI_Software_Engineer_Assistant
+          hf_token: ${{ secrets.Hugging_Face_WA }}
+          repo_type: space
+          space_sdk: docker
