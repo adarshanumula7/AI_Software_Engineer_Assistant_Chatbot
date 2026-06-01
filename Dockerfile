@@ -1,5 +1,9 @@
 FROM python:3.12
 
+RUN apt-get update && apt-get install -y tzdata
+
+ENV TZ=Asia/Kolkata
+
 WORKDIR /app
 
 COPY requirements.txt .
