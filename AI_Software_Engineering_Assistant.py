@@ -1,8 +1,10 @@
 import panel as pn
+from dotenv import load_dotenv
 from groq import Groq
 import os
 
 pn.extension()
+load_dotenv()
 
 API_KEY = os.getenv("GROQ_API_KEY")
 
