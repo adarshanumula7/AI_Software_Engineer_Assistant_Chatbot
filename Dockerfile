@@ -10,7 +10,7 @@ COPY . .
 
 EXPOSE 7860
 
-CMD panel serve Prompt_Assistant.py \
+CMD panel serve AI_Software_Engineer_Assistant.py \
     --address 0.0.0.0 \
     --port 7860 \
     --allow-websocket-origin=*
