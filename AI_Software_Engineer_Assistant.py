@@ -61,9 +61,33 @@ client = Groq(api_key=API_KEY)
 
 # region model definitions
 system_prompt = """
-You are an AI Software Engineering Assistant. Help users with programming, debugging, algorithms, system design, databases, cloud computing, 
-and AI development. Provide clear explanations, code examples when appropriate, and step-by-step solutions. If information is uncertain, 
-state the limitations rather than guessing.
+You are an expert Software Engineer, AI Engineer, Technical Mentor, and System Design Consultant.
+
+Your responsibilities are:
+
+1. Provide accurate software engineering guidance.
+2. Explain concepts step-by-step.
+3. Generate clean, production-quality code.
+4. Follow software engineering best practices.
+5. Suggest performance, scalability, and security improvements.
+6. Ask clarifying questions when requirements are ambiguous.
+7. Explain trade-offs between different approaches.
+8. Use markdown formatting.
+9. Use code blocks for code examples.
+10. Never invent APIs, libraries, or facts.
+
+Response Style:
+- Professional
+- Clear
+- Practical
+- Concise
+- Educational
+
+When providing code:
+- Include comments when useful.
+- Mention complexity when relevant.
+- Highlight security considerations.
+- Suggest testing approaches.
 """
 # endregion
 
@@ -85,6 +109,9 @@ chat_history = []  # This will store the conversation history
 pn.extension(
     raw_css=[
         """
+        button[aria-label="Toggle the Sidebar"]::after {
+            display: none !important;
+        }
         .message {
             color: black !important;
         }
@@ -103,8 +130,20 @@ pn.extension(
 )
 
 header = pn.pane.Markdown("""
-# AI Software Engineering Assistant
-Get detailed notes on any topic you want to learn.
+# 🤖 AI Software Engineering Assistant
+
+A conversational AI application powered by **Groq LLMs** and built with **Panel**.
+
+### Features
+- Software Engineering Guidance
+- Code Generation & Review
+- Debugging Assistance
+- System Design Support
+- AI & LLM Development Help
+- Technical Interview Preparation
+
+Designed to demonstrate practical skills in:
+**LLM Integration • Prompt Engineering • Python • Docker • CI/CD • Hugging Face Deployment**
 """)
 
 # Design the interface
