@@ -1,12 +1,11 @@
 ---
-
 title: AI Software Engineer Assistant
 emoji: 🤖
 colorFrom: blue
 colorTo: purple
 sdk: docker
 app_port: 7860
---------------
+---
 
 # AI Software Engineer Assistant
 
