@@ -17,7 +17,7 @@ The application provides software engineering guidance, coding assistance, debug
 
 ## 🚀 Live Demo
 
-> Add your Hugging Face Space URL here
+> Hugging Face Space URL
 
 ```
 https://huggingface.co/spaces/adarsh-anumula7/AI_Software_Engineer_Assistant
