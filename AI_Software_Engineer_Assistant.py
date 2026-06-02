@@ -2,6 +2,7 @@ import panel as pn
 from dotenv import load_dotenv
 from groq import Groq
 import os
+import io, json
 
 pn.extension()
 load_dotenv()
@@ -37,6 +38,19 @@ def chat_callback(message, user, instance):
         print("ERROR: ", repr(e))
         raise
 
+def generate_chat_json():
+    json_str = json.dumps(chat_history, indent=2)
+    return io.StringIO(json_str)
+
+def generate_txt():
+    text = ""
+
+    for msg in chat_history:
+        text += f"{msg['role'].capitalize()}:\n"
+        text += f"{msg['content']}\n\n"
+
+    return io.StringIO(text)
+
 # endregion 
 
 # region UI details
@@ -54,6 +68,13 @@ model_select = pn.widgets.Select(
     value="llama-3.3-70b-versatile"
 )
 
+download_button = pn.widgets.FileDownload(
+    filename="chat_history.txt",
+    button_type="primary",
+    label="Download Chat History",
+    sizing_mode="stretch_width",
+    callback=generate_txt
+)
 # endregion
 
 # Initialize the GenAI client
@@ -147,11 +168,24 @@ Designed to demonstrate practical skills in:
 """)
 
 # Design the interface
+
+settings = pn.Card(
+    model_select,
+    temperature,
+    title="Generation Settings"
+)
+
+export = pn.Card(
+    download_button,
+    title="Export"
+)
+
 template = pn.template.FastListTemplate(
     title="AI Software Engineering Assistant",
     sidebar=[
-        model_select,
-        temperature
+        settings,
+        pn.Spacer(height=20),
+        export
     ],
     theme=pn.theme.DarkTheme,
     theme_toggle=False,
